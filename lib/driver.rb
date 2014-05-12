@@ -11,6 +11,12 @@ class Driver
   end
 
   def file_system(user)
-    Ftpd::VirtualFileSystem.new(@args)
+    Ftpd::VirtualFileSystem.new(get_outfile_name)
+  end
+
+  private
+
+  def get_outfile_name
+    @args.outfile || 'gpon_config.xml'
   end
 end

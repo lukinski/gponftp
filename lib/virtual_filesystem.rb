@@ -5,9 +5,8 @@ module Ftpd
   class VirtualFileSystem
     attr_accessor :client_ip
 
-    def initialize(options)
-      @options = options
-      @outfile = get_outfile_name
+    def initialize(outfile)
+      @outfile = outfile
     end
 
     def get_content
@@ -18,11 +17,6 @@ module Ftpd
       ftp_path == "/#{@outfile}"
     end
 
-    private
-
-    def get_outfile_name
-      @options.outfile || 'gpon_config.xml'
-    end
   end
 
   module Accessors
