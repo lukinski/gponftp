@@ -7,6 +7,7 @@ module Ftpd
 
     def initialize(outfile)
       @outfile = outfile
+      @outfile_path = "/#{@outfile}"
     end
 
     def get_content
@@ -14,9 +15,8 @@ module Ftpd
     end
 
     def is_content_file?(ftp_path)
-      ftp_path == "/#{@outfile}"
+      ftp_path == @outfile_path
     end
-
   end
 
   module Accessors
@@ -25,11 +25,11 @@ module Ftpd
     end
 
     def exists?(ftp_path)
-      ['/', '.', "/#{@outfile}"].include?(ftp_path)
+      ['/', '.', @outfile_path].include?(ftp_path)
     end
 
     def directory?(ftp_path)
-      ftp_path != @outfile
+      ftp_path != @outfile_path
     end
   end
 
@@ -56,7 +56,7 @@ module Ftpd
     end
 
     def dir(ftp_path)
-      flist = ftp_path == '*' ? [] : ["/#{@outfile}"]
+      ftp_path == '*' ? [] : [@outfile_path]
     end
 
     private

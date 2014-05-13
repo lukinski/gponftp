@@ -33,7 +33,7 @@ class Server
   end
 
   def wait_until_stopped
-    puts 'GPON FTP server started. Press ctrl+C to exit'
+    puts 'GPON FTP server started. Press Ctrl+C to exit'
     $stdout.flush
 
     begin

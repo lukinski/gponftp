@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../lib/command_parser.rb'
+require_relative '../../lib/command_parser.rb'
 
 describe CommandParser::Arguments do
   describe '#new' do

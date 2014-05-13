@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../lib/driver.rb'
+require_relative '../../lib/driver.rb'
 
 describe Driver do
   let(:driver) { Driver.new([]) }
@@ -25,8 +25,8 @@ describe Driver do
     end
 
     it 'accepts any user/password combination' do
-      expect(driver.authenticate('dummy', 'pass')).to be_true
-      expect(driver.authenticate('dummy1', 'pass2')).to be_true
+      expect(driver.authenticate('dummy', 'pass')).to be true
+      expect(driver.authenticate('dummy1', 'pass2')).to be true
     end
   end
 
