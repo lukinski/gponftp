@@ -1,4 +1,3 @@
-require 'spec_helper'
 require 'builder'
 
 module ConfigFileBuilder
