@@ -1,6 +1,6 @@
 require 'ftpd'
 require_relative 'lib/driver'
-require_relative 'lib/command_parser.rb'
+require_relative 'lib/command_parser'
 
 class Server
   def initialize(argv)

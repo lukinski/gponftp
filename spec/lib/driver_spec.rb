@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-require_relative '../../lib/driver.rb'
+require_relative '../../lib/driver'
 
 describe Driver do
   let(:driver) { Driver.new([]) }

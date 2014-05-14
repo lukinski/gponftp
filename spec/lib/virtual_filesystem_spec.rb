@@ -1,12 +1,10 @@
 require 'spec_helper'
 
-require_relative '../../lib/virtual_filesystem.rb'
+require_relative '../../lib/virtual_filesystem'
 
 describe Ftpd::VirtualFileSystem do
-  let(:xml_file_name) { 'test.xml' }
-  let(:xml_file_path) { "/#{xml_file_name}" }
   let(:virtual_filesystem) { Ftpd::VirtualFileSystem.new(xml_file_name) }
-  let(:client_ip) { '192.168.1.100' }
+  before(:all) { virtual_filesystem.client_ip = client_ip }
 
   describe '#new' do
     it 'is instance of VirtualFileSystem' do
@@ -15,8 +13,6 @@ describe Ftpd::VirtualFileSystem do
   end
 
   context 'with output filename set' do
-    before(:all) { virtual_filesystem.client_ip = client_ip }
-
     describe '#client_ip' do
       it 'allows client IP to be set' do
         virtual_filesystem.client_ip = client_ip
@@ -95,12 +91,16 @@ describe Ftpd::VirtualFileSystem do
     end
 
     describe '#read' do
-      before(:all) { virtual_filesystem.client_ip = client_ip }
-
       it 'returns XML with IP for any attribute' do
         expect(virtual_filesystem.read(xml_file_path)).to match(/#{client_ip}/)
         expect(virtual_filesystem.read('/')).to match(/#{client_ip}/)
         expect(virtual_filesystem.read('/dummy.txt')).to match(/#{client_ip}/)
+      end
+    end
+
+    describe '#file_info' do
+      it 'returns info with path to file' do
+        expect(virtual_filesystem.file_info(xml_file_path).path).to eq xml_file_path
       end
     end
   end
