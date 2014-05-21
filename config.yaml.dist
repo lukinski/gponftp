@@ -1,2 +1,3 @@
-admin_password: pass
-user_password: pass
+admin_password: adminpass
+user_password: userpass
+telnet_admin_password: telnetadminpass
