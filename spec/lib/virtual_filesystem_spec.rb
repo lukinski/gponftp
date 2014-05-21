@@ -4,7 +4,11 @@ require_relative '../../lib/virtual_filesystem'
 
 describe Ftpd::VirtualFileSystem do
   let(:virtual_filesystem) { Ftpd::VirtualFileSystem.new(xml_file_name) }
-  before(:all) { virtual_filesystem.client_ip = client_ip }
+
+  # before(:each), as using let in before(:all) is deprecated
+  before(:each) {
+    virtual_filesystem.client_ip = client_ip
+  }
 
   describe '#new' do
     it 'is instance of VirtualFileSystem' do
@@ -22,7 +26,7 @@ describe Ftpd::VirtualFileSystem do
 
     describe '#get_content' do
       its 'value contains client\'s IP address' do
-        expect(virtual_filesystem.get_content).to match(/#{client_ip}/)
+        expect(virtual_filesystem.get_content).to match(/#{@client_ip}/)
       end
     end
 
@@ -87,14 +91,6 @@ describe Ftpd::VirtualFileSystem do
         expect(virtual_filesystem.directory?('../..')).to be true
         expect(virtual_filesystem.directory?('/root')).to be true
         expect(virtual_filesystem.directory?('dummy.txt')).to be true
-      end
-    end
-
-    describe '#read' do
-      it 'returns XML with IP for any attribute' do
-        expect(virtual_filesystem.read(xml_file_path)).to match(/#{client_ip}/)
-        expect(virtual_filesystem.read('/')).to match(/#{client_ip}/)
-        expect(virtual_filesystem.read('/dummy.txt')).to match(/#{client_ip}/)
       end
     end
 

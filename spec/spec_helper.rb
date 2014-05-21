@@ -13,3 +13,5 @@ end
 RSpec.configure do |config|
   config.include ServerSpec::GlobalHelpers
 end
+
+Dir["./spec/support/**/*.rb"].each {|f| require f}
