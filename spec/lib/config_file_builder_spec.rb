@@ -19,7 +19,7 @@ describe ConfigFileBuilder::ConfigBuilder do
     end
 
     it 'contains ONTProvision.configuration branch' do
-      should match(/<ONTProvision.configuration>.+<\/ONTProvision.configuration>/)
+      should match(/<ONTProvision.configuration>.+<\/ONTProvision.configuration>/m)
     end
 
     it 'contains modified_time branch with date and time' do

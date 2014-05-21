@@ -19,10 +19,10 @@ module ConfigFileBuilder
     def generate_xml
       device = get_device_data
 
-      xml = Builder::XmlMarkup.new
+      xml = Builder::XmlMarkup.new(indent: 2)
       xml.instruct! :xml, version: '1.0'
       xml.tag! 'ONTProvision.configuration' do
-        xml.modified_time '2014-05-20 12:00:00'
+        xml.modified_time '2014-05-21 16:00:00'
 
         xml.wan_ppp_configuration do
           xml.fixed_flag 0
@@ -39,7 +39,7 @@ module ConfigFileBuilder
           xml.fixed_flag 1
           xml.cfg_after_factory 1
           xml.web_port 8080
-          xml.user_wan_cfg 1
+          xml.user_wan_cfg 2
           xml.admin_passwd "#{@config.admin_password}"
           xml.user_passwd "#{@config.user_password}"
           xml.gpon_passwd_method 0
