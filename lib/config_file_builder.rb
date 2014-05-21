@@ -1,10 +1,13 @@
 require 'builder'
 require 'date'
 
+require_relative 'application_config'
+
 module ConfigFileBuilder
   class ConfigBuilder
     def initialize(client_ip)
       @client_ip = client_ip
+      @config = ApplicationConfig.new
     end
 
     def get_content
@@ -37,8 +40,8 @@ module ConfigFileBuilder
           xml.cfg_after_factory 1
           xml.web_port 8080
           xml.user_wan_cfg 1
-          xml.admin_passwd ''
-          xml.user_passwd ''
+          xml.admin_passwd "#{@config.admin_password}"
+          xml.user_passwd "#{@config.user_password}"
           xml.gpon_passwd_method 0
           xml.gpon_passwd ''
           xml.web_language 'english'
