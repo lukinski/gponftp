@@ -1,6 +1,6 @@
 ftp:
   user_login: gponlogin
-  user_pass: gponpass
+  user_password: gponpass
 xml:
   admin_password: adminpass
   user_password: userpass
