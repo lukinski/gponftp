@@ -4,10 +4,11 @@ require_relative 'virtual_filesystem'
 class Driver
   def initialize(args)
     @args = args
+    @config = ApplicationConfig.new
   end
 
   def authenticate(user, password)
-    true
+    user == @config.ftp['user_login'] && password == @config.ftp['user_password']
   end
 
   def file_system(user)

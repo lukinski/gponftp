@@ -19,14 +19,18 @@ describe Driver do
 
   describe '#authenticate' do
     it 'receives login and password' do
-      #use "{}" block style over "do - end" due to precedence
       expect(driver).to receive(:authenticate).with(:dummy, :secret)
       driver.authenticate(:dummy, :secret)
     end
 
-    it 'accepts any user/password combination' do
-      expect(driver.authenticate('dummy', 'pass')).to be true
-      expect(driver.authenticate('dummy1', 'pass2')).to be true
+    it 'rejects invalid user/password combination' do
+      expect(driver.authenticate('dummy', 'pass')).to be false
+      expect(driver.authenticate('dummy1', 'pass2')).to be false
+    end
+
+    it 'accepts valid user/password combination' do
+      config = ApplicationConfig.new
+      expect(driver.authenticate(config.ftp['user_login'], config.ftp['user_password'])).to be true
     end
   end
 
