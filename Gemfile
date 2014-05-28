@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem 'ftpd'
+gem 'ftpd', '0.11.0'
 gem 'builder'
 
 group :development do
