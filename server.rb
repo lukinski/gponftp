@@ -37,11 +37,16 @@ class Server
     puts 'GPON FTP server started. Press Ctrl+C to exit'
     $stdout.flush
 
-    begin
-      #Explicit use of $stdin because we can provide outfile name as a command line argument
-      $stdin.gets while true
-    rescue Interrupt
-      puts "\nExiting..."
+    while true do
+      begin
+        #Explicit use of $stdin because we can provide outfile name as a command line argument
+        $stdin.gets
+      rescue Interrupt
+        puts "\nExiting..."
+        exit
+      rescue => ex
+        puts ex.backtrace
+      end
     end
   end
 end
