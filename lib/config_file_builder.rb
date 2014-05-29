@@ -2,6 +2,7 @@ require 'builder'
 require 'date'
 
 require_relative 'application_config'
+require_relative 'device_data_provider'
 
 module ConfigFileBuilder
   class ConfigBuilder
@@ -26,8 +27,8 @@ module ConfigFileBuilder
 
     def build_xml(device)
       @device = device
-
       @xml.tag! 'ONTProvision.configuration' do
+        @xml.client_ip @device[:ip]
         @xml.modified_time '2014-05-21 16:00:00'
 
         add_wan_ppp_configuration
@@ -41,7 +42,7 @@ module ConfigFileBuilder
     end
 
     def get_device_data
-      {ip: @client_ip}
+      DeviceDataProvider.new.get_data(@client_ip)
     end
 
     def add_wan_ppp_configuration
@@ -156,7 +157,7 @@ module ConfigFileBuilder
           @xml.DictionaryEntry do
             @xml.Key 1, ClassID: 1
             @xml.Value ClassID: 4, IsNewClass: 'true', ClassName: 'ONTProvision.ssid_config_item' do
-              @xml.name 'INGRAM-device-{# device_id #}'
+              @xml.name "INGRAM-device-#{@device[:id]}"
               @xml.maximum_connections 16
               @xml.hidden_ssid 0
               @xml.authentication 4
@@ -174,7 +175,7 @@ module ConfigFileBuilder
                   add_ssid_config_key_dictionary_entry(@xml, key_entry_num)
                 end
               end
-              @xml.pre_shared_key '{# wpa #}'
+              @xml.pre_shared_key @device[:wpa]
               @xml.radius_server ''
               @xml.password ''
               @xml.port 1

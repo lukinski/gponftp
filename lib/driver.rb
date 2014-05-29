@@ -8,7 +8,6 @@ class Driver
   end
 
   def authenticate(user, password)
-    puts "#{@config.ftp}: #{user}, #{password}"
     user == @config.ftp['user_login'] && password == @config.ftp['user_password']
   end
 
