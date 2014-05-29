@@ -5,3 +5,8 @@ xml:
   admin_password: adminpass
   user_password: userpass
   telnet_admin_password: telnetadminpass
+database:
+  host: localhost
+  username: root
+  password:
+  dbname: wlan_sys
