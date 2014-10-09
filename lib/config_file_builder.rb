@@ -42,7 +42,7 @@ module ConfigFileBuilder
     end
 
     def get_device_data
-      DeviceDataProvider.new.get_data(@client_ip)
+      DeviceDataProvider.new.get_data_by_ip(@client_ip)
     end
 
     def add_wan_ppp_configuration

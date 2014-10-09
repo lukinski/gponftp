@@ -21,21 +21,21 @@ describe DeviceDataProvider do
     end
   end
 
-  describe '#get_data' do
-    it 'responds to get_data method' do
-      expect(provider).to respond_to(:get_data)
+  describe '#get_data_by_ip' do
+    it 'responds to get_data_by_ip method' do
+      expect(provider).to respond_to(:get_data_by_ip)
     end
 
     it 'accepts (ip) as a parameter' do
-     expect { provider.get_data(client_ip) }.to_not raise_error
+     expect { provider.get_data_by_ip(client_ip) }.to_not raise_error
    end
 
    it 'raises error if IP not found' do
-      expect { provider.get_data('0.0.0.0') }.to raise_error
+      expect { provider.get_data_by_ip('0.0.0.0') }.to raise_error
    end
 
    it 'returns empty hash for invalid IP' do
-    expect(provider.get_data('')).to eq({})
+    expect(provider.get_data_by_ip('')).to eq({})
    end
 
    subject(:result) {  }

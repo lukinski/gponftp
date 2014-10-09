@@ -13,7 +13,9 @@ class DeviceDataProvider
     )
   end
 
-  def get_data(ip)
+  def get_data_by_ip(ip)
+    # TESTING ONLY - REMOVE!!!
+    # ip = '192.168.3.2' if (ip == '83.1.224.3' || ip == '192.168.251.101')
     return {} if !ip_valid?(ip)
     fetch_device_data(ip)
   end
