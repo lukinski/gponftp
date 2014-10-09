@@ -26,13 +26,19 @@ describe Ftpd::VirtualFileSystem do
 
     describe '#get_content' do
       its 'value contains client\'s IP address' do
+        virtual_filesystem.client_ip = client_ip
         expect(virtual_filesystem.get_content).to match(/#{@client_ip}/)
       end
     end
 
     describe '#is_content_file?' do
-      it 'returns TRUE for XML file path' do
+      it 'returns TRUE for given XML file path' do
         expect(virtual_filesystem.is_content_file?(xml_file_path)).to be true
+      end
+
+      it 'returns TRUE for random XML file name' do
+        random_xml_file = (0...12).map { (65 + rand(26)).chr }.join
+        expect(virtual_filesystem.is_content_file?("/#{random_xml_file}.xml")).to be true
       end
 
       it 'returns FALSE for path other than XML file' do
@@ -87,10 +93,10 @@ describe Ftpd::VirtualFileSystem do
         expect(virtual_filesystem.directory?(xml_file_path)).to be false
       end
 
-      it 'returns TRUE for any path other than XML file' do
-        expect(virtual_filesystem.directory?('../..')).to be true
-        expect(virtual_filesystem.directory?('/root')).to be true
-        expect(virtual_filesystem.directory?('dummy.txt')).to be true
+      it 'returns FALSE for any path other than XML file' do
+        expect(virtual_filesystem.directory?('../..')).to be false
+        expect(virtual_filesystem.directory?('/root')).to be false
+        expect(virtual_filesystem.directory?('dummy.txt')).to be false
       end
     end
 

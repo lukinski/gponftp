@@ -13,11 +13,16 @@ class DeviceDataProvider
     )
   end
 
+  def get_data_by_sn(serial_number)
+    sn = @db.escape(serial_number).downcase
+    fetch_device_data base_query("LOWER(onu_number)='#{sn}'")
+  end
+
   def get_data_by_ip(ip)
     # TESTING ONLY - REMOVE!!!
-    # ip = '192.168.3.2' if (ip == '83.1.224.3' || ip == '192.168.251.101')
+    ip = '192.168.3.2' if (ip == '83.1.224.3' || ip == '192.168.251.101')
     return {} if !ip_valid?(ip)
-    fetch_device_data(ip)
+    fetch_device_data_by_ip(ip)
   end
 
   def ip_valid?(ip)
@@ -26,16 +31,24 @@ class DeviceDataProvider
 
   private
 
-  def fetch_device_data(ip)
-    ip = @db.escape(ip)
-    result = @db.query("SELECT
+  def base_query(where)
+    "SELECT
       id,
-      '#{ip}' ip,
+      INET_NTOA(ip) ip,
       DATE_FORMAT(modification_date + ' 00:00:00', '%Y-%m-%d %H:%i:%s') modification_date,
       IFNULL(local_access_key, '') wpa
-    FROM clients_devices WHERE ip=INET_ATON('#{ip}') LIMIT 1", symbolize_keys: true)
+    FROM clients_devices WHERE #{where} LIMIT 1"
+  end
 
-    raise "Device not found: #{ip}" if result.count == 0
+  def fetch_device_data_by_ip(ip)
+    ip = @db.escape(ip)
+    fetch_device_data base_query("ip=INET_ATON('#{ip}')")
+  end
+
+  def fetch_device_data(query)
+    result = @db.query(query, symbolize_keys: true)
+
+    raise "Device not found" if result.count == 0
     result.first
   end
 end

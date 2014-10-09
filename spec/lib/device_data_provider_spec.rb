@@ -37,7 +37,15 @@ describe DeviceDataProvider do
    it 'returns empty hash for invalid IP' do
     expect(provider.get_data_by_ip('')).to eq({})
    end
+  end
 
-   subject(:result) {  }
+  describe '#get_data_by_sn' do
+    it 'responds to get_data_by_sn method' do
+      expect(provider).to respond_to(:get_data_by_sn)
+    end
+
+    it 'raises error if SN not found' do
+      expect { provider.get_data_by_sn('NONEXISTENT') }.to raise_error
+    end
   end
 end

@@ -6,12 +6,13 @@ require_relative 'device_data_provider'
 
 module ConfigFileBuilder
   class ConfigBuilder
-    def initialize(client_ip)
+    def initialize(client_ip = nil)
       @client_ip = client_ip
       @config = ApplicationConfig.new
     end
 
-    def get_content
+    def get_content(outfile_name = nil)
+      @outfile_name = outfile_name
       @output = generate_xml
     end
 
@@ -42,7 +43,13 @@ module ConfigFileBuilder
     end
 
     def get_device_data
-      DeviceDataProvider.new.get_data_by_ip(@client_ip)
+      device_data_provider = DeviceDataProvider.new
+      if(@outfile_name)
+        serial_number = File.basename(@outfile_name, '.*')
+        device_data_provider.get_data_by_sn(serial_number)
+      else
+        device_data_provider.get_data_by_ip(@client_ip)
+      end
     end
 
     def add_wan_ppp_configuration

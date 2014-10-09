@@ -10,12 +10,12 @@ module Ftpd
       @outfile_path = "/#{@outfile}"
     end
 
-    def get_content
-      ConfigFileBuilder::ConfigBuilder.new(client_ip).get_content
+    def get_content(ftp_path = nil)
+      ConfigFileBuilder::ConfigBuilder.new(client_ip).get_content(ftp_path)
     end
 
     def is_content_file?(ftp_path)
-      ftp_path == @outfile_path
+      ftp_path.end_with?('.xml')
     end
   end
 
@@ -25,17 +25,17 @@ module Ftpd
     end
 
     def exists?(ftp_path)
-      ['/', '.', @outfile_path].include?(ftp_path)
+      ftp_path.end_with?('.xml') || directory?(ftp_path)
     end
 
     def directory?(ftp_path)
-      ftp_path != @outfile_path
+      ['/', '.'].include?(ftp_path)
     end
   end
 
   module Read
     def read(ftp_path)
-      get_content
+      get_content(ftp_path)
     end
   end
 
