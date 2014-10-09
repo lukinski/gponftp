@@ -3,6 +3,7 @@ require_relative 'config_file_builder'
 module Ftpd
 
   class VirtualFileSystem
+
     attr_accessor :client_ip
 
     def initialize(outfile)
@@ -34,8 +35,14 @@ module Ftpd
   end
 
   module Read
+    include Error
+
     def read(ftp_path)
-      get_content(ftp_path)
+      begin
+        get_content(ftp_path)
+      rescue
+        error '550 Access denied'
+      end
     end
   end
 
