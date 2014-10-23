@@ -48,4 +48,14 @@ describe DeviceDataProvider do
       expect { provider.get_data_by_sn('NONEXISTENT') }.to raise_error
     end
   end
+
+  describe '#get_onu_attributes' do
+    it 'responds to get_onu_attributes method' do
+      expect(provider).to respond_to(:get_onu_attributes)
+    end
+
+    it 'accepts :serial_number as a parameter' do
+      expect { provider.get_onu_attributes(:serial_number) }.to_not raise_error
+    end
+  end
 end

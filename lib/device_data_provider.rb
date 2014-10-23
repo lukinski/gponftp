@@ -1,16 +1,8 @@
-require 'mysql2'
-
-require_relative 'application_config'
+require_relative 'database_connector'
 
 class DeviceDataProvider
   def initialize
-    @config = ApplicationConfig.new
-    @db = Mysql2::Client.new(
-      host: @config.database['host'],
-      username: @config.database['username'],
-      password: @config.database['password'],
-      database: @config.database['dbname']
-    )
+    @db = DatabaseConnector.instance.get_connection
   end
 
   def get_data_by_sn(serial_number)
@@ -27,6 +19,10 @@ class DeviceDataProvider
 
   def ip_valid?(ip)
     !!(ip =~ /\A\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}\Z/)
+  end
+
+  def get_onu_attributes(serial_number)
+
   end
 
   private
