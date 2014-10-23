@@ -12,15 +12,16 @@ describe JsonConfigParser do
   end
 
   describe '#parse' do
+     let(:json) { '{"common_attributes": {"SSID": "ingram-DEVICE-12345", "WPA": "DummyWPA", "PPPOE_USER": "user_12345", "PPPOE_PASSWORD": "dummy_password_123", "ENC_TYPE": "WPA2", "ENABLE_NAT": "true", "WAN_TYPE": "dhcp"}, "custom_attributes": {"ENC_TYPE":"WEP","ENABLE_NAT":"true","WAN_TYPE":"static","LAN_IP":"127.0.0.1"}}' }
+
     it 'responds to #parse method' do
       expect(parser).to respond_to(:parse)
     end
 
     it 'accepts :json String as parameter' do
-      expect { parser.parse('{}') }.to_not raise_error
+      expect { parser.parse(json) }.to_not raise_error
     end
 
-    let(:json) { '{"val":"test","val1":"test1","val2":"test2"}' }
     let(:parsed_json) { parser.parse(json) }
 
     it 'returns configuration as Hash' do
@@ -28,11 +29,19 @@ describe JsonConfigParser do
     end
 
     its 'returned value contains valid keys' do
-      expect(parsed_json.has_key?('val')).to be_true
+      expect(parsed_json.has_key?('SSID')).to be_true
     end
 
     its 'returned value contains proper values' do
-      expect(parsed_json.has_value?('test2')).to be_true
+      expect(parsed_json.has_value?('ingram-DEVICE-12345')).to be_true
+    end
+
+    it 'properly handles custom attributes' do
+      expect(parsed_json['WAN_TYPE']).to eq 'static'
+    end
+
+    it 'raise error with invalid JSON' do
+      expect { parser.parse('{ "a": "invalid') }.to raise_error
     end
   end
 
