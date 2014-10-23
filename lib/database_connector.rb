@@ -19,4 +19,10 @@ class DatabaseConnector
   def get_connection
     @db
   end
+
+  def execute(query, symbolize = true)
+    result = @db.query(query, symbolize_keys: symbolize)
+    raise "Record not found" if result.count == 0
+    result
+  end
 end

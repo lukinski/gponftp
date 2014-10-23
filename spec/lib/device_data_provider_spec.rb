@@ -49,13 +49,28 @@ describe DeviceDataProvider do
     end
   end
 
-  describe '#get_onu_attributes' do
-    it 'responds to get_onu_attributes method' do
-      expect(provider).to respond_to(:get_onu_attributes)
+  context "fetching device ONU config attributes" do
+    let(:serial_number) { 'DSNW4bdf7850' }
+
+    describe '#get_onu_attributes' do
+      it 'responds to get_onu_attributes method' do
+        expect(provider).to respond_to(:get_onu_attributes)
+      end
+
+      let(:fetched_config) { provider.get_onu_attributes(serial_number) }
+
+      it 'accepts :serial_number as a parameter' do
+        expect { fetched_config }.to_not raise_error
+      end
+
+      it 'returns hash ONU configuration' do
+        expect(fetched_config).to be_a Hash
+      end
+
+      it 'raises error if SN not found' do
+        expect { provider.get_onu_attributes('NONEXISTENT') }.to raise_error
+      end
     end
 
-    it 'accepts :serial_number as a parameter' do
-      expect { provider.get_onu_attributes(:serial_number) }.to_not raise_error
-    end
   end
 end

@@ -1,8 +1,9 @@
 require_relative 'database_connector'
+require_relative 'json_config_parser'
 
 class DeviceDataProvider
   def initialize
-    @db = DatabaseConnector.instance.get_connection
+    @db = DatabaseConnector.instance
   end
 
   def get_data_by_sn(serial_number)
@@ -22,7 +23,8 @@ class DeviceDataProvider
   end
 
   def get_onu_attributes(serial_number)
-
+    attrs = fetch_device_onu_attributes(serial_number)
+    JsonConfigParser.new.parse attrs
   end
 
   private
@@ -37,14 +39,20 @@ class DeviceDataProvider
   end
 
   def fetch_device_data_by_ip(ip)
-    ip = @db.escape(ip)
+    ip = @db.get_connection.escape(ip)
     fetch_device_data base_query("ip=INET_ATON('#{ip}')")
   end
 
   def fetch_device_data(query)
-    result = @db.query(query, symbolize_keys: true)
-
-    raise "Device not found" if result.count == 0
+    result = @db.execute(query)
     result.first
+  end
+
+  def fetch_device_onu_attributes(sn)
+    sn = @db.get_connection.escape(sn)
+    query = "SELECT getDeviceOnuConfigJson('#{sn}') attributes"
+    result = @db.execute(query)
+    raise "Device not found" if result.first[:attributes] == nil
+    result.first[:attributes]
   end
 end
