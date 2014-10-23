@@ -4,6 +4,7 @@ require_relative '../../lib/device_data_provider'
 
 describe DeviceDataProvider do
   let(:provider) { DeviceDataProvider.new }
+  let(:serial_number) { 'DSNW4bdf7850' }
 
   describe '#new' do
     it 'is instance of DeviceDataProvider' do
@@ -47,10 +48,13 @@ describe DeviceDataProvider do
     it 'raises error if SN not found' do
       expect { provider.get_data_by_sn('NONEXISTENT') }.to raise_error
     end
+
+    its 'return hash contains onu_attributes key' do
+      expect(provider.get_data_by_sn(serial_number).has_key?('onu_attributes')).to be_true
+    end
   end
 
   context "fetching device ONU config attributes" do
-    let(:serial_number) { 'DSNW4bdf7850' }
 
     describe '#get_onu_attributes' do
       it 'responds to get_onu_attributes method' do

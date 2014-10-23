@@ -7,8 +7,11 @@ class DeviceDataProvider
   end
 
   def get_data_by_sn(serial_number)
-    sn = @db.escape(serial_number).downcase
-    fetch_device_data base_query("LOWER(onu_number)='#{sn}'")
+    sn = @db.get_connection.escape(serial_number).downcase
+    device = fetch_device_data base_query("LOWER(onu_number)='#{sn}'")
+    device['onu_attributes'] = get_onu_attributes(serial_number)
+
+    device
   end
 
   def get_data_by_ip(ip)
@@ -50,7 +53,7 @@ class DeviceDataProvider
 
   def fetch_device_onu_attributes(sn)
     sn = @db.get_connection.escape(sn)
-    query = "SELECT getDeviceOnuConfigJson('#{sn}') attributes"
+    query = "SELECT getDeviceOnuConfigJson(LOWER('#{sn}')) attributes"
     result = @db.execute(query)
     raise "Device not found" if result.first[:attributes] == nil
     result.first[:attributes]
