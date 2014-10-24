@@ -26,6 +26,10 @@ describe ConfigFileBuilder::ConfigBuilder do
       should match(/<modified_time>.+<\/modified_time>/)
     end
 
+    it 'returns default value for empty onu_attribute' do
+      expect(builder.attr(nil, 'default')).to eq 'default'
+    end
+
     it_should_behave_like('xml file', 'wan_ppp_configuration', [
       '<fixed_flag>\d+<\/fixed_flag>',
       '<wan_ipmode>\d+<\/wan_ipmode>',

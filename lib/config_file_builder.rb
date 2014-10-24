@@ -24,11 +24,11 @@ module ConfigFileBuilder
       @xml.target!
     end
 
-    private
-
     def attr(key, default)
-      @onu_attrs[key] || default
+      @onu_attrs && @onu_attrs.has_key?(key) ? @onu_attrs[key] : default
     end
+
+    private
 
     def build_xml(device)
       @device = device

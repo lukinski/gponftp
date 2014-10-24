@@ -40,7 +40,7 @@ module Ftpd
     def read(ftp_path)
       begin
         get_content(ftp_path)
-      rescue
+      rescue => ex
         error '550 Access denied'
       end
     end
