@@ -26,8 +26,13 @@ module ConfigFileBuilder
 
     private
 
+    def attr(key, default)
+      @onu_attrs[key] || default
+    end
+
     def build_xml(device)
       @device = device
+      @onu_attrs = @device['onu_attributes']
       @xml.tag! 'ONTProvision.configuration' do
         @xml.client_ip @device[:ip]
         @xml.modified_time '2014-05-21 16:00:00'
@@ -164,7 +169,7 @@ module ConfigFileBuilder
           @xml.DictionaryEntry do
             @xml.Key 1, ClassID: 1
             @xml.Value ClassID: 4, IsNewClass: 'true', ClassName: 'ONTProvision.ssid_config_item' do
-              @xml.name "INGRAM-device-#{@device[:id]}"
+              @xml.name attr('SSID', "INGRAM-device-#{@device[:id]}")
               @xml.maximum_connections 16
               @xml.hidden_ssid 0
               @xml.authentication 4
