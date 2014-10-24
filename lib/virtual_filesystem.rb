@@ -6,9 +6,10 @@ module Ftpd
 
     attr_accessor :client_ip
 
-    def initialize(outfile)
+    def initialize(outfile, debug_mode = false)
       @outfile = outfile
       @outfile_path = "/#{@outfile}"
+      @debug_mode = debug_mode
     end
 
     def get_content(ftp_path = nil)
@@ -41,6 +42,10 @@ module Ftpd
       begin
         get_content(ftp_path)
       rescue => ex
+        if @debug_mode
+          puts ex.message
+          puts ex.backtrace
+        end
         error '550 Access denied'
       end
     end

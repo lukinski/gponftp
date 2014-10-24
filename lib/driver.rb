@@ -12,7 +12,7 @@ class Driver
   end
 
   def file_system(user)
-    Ftpd::VirtualFileSystem.new(get_outfile_name)
+    Ftpd::VirtualFileSystem.new(get_outfile_name, @args.debug)
   end
 
   private
