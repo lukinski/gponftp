@@ -6,7 +6,8 @@ require_relative 'lib/command_parser'
 class Server
   def initialize(argv)
     @args = CommandParser::Arguments.new(argv)
-    @driver = Driver.new(@args)
+    make_log
+    @driver = Driver.new(@args, @log)
     @server = Ftpd::FtpServer.new(@driver)
     configure_server
   end
@@ -20,7 +21,7 @@ class Server
   def configure_server
     @server.interface = @args.interface
     @server.port = @args.port
-    @server.log = make_log
+    @server.log = @log
   end
 
   def display_connection_info
@@ -30,7 +31,8 @@ class Server
   end
 
   def make_log
-    @args.debug && Logger.new($stdout)
+    @log = Logger.new('onu_ftp_filesystem.log', 10, 1024000)
+    @log.level = @args.debug ? Logger::DEBUG : Logger::WARN
   end
 
   def wait_until_stopped

@@ -6,8 +6,8 @@ module Ftpd
 
     attr_accessor :client_ip
 
-    def initialize(outfile, debug_mode = false)
-      @logger = Logger.new('onu_ftp_filesystem.log', 10, 1024000)
+    def initialize(outfile, debug_mode = false, log = nil)
+      @log = log
       @outfile_path = "/#{outfile}"
       @debug_mode = debug_mode
     end
@@ -42,9 +42,9 @@ module Ftpd
       begin
         get_content(ftp_path)
       rescue => ex
-        if @debug_mode
-          puts ex.message
-          puts ex.backtrace
+        if @log != nil
+          @log.warn ex.message
+          @log.debug ex.backtrace
         end
         error '550 Access denied'
       end

@@ -2,8 +2,9 @@ require_relative 'custom_ftpd'
 require_relative 'virtual_filesystem'
 
 class Driver
-  def initialize(args)
+  def initialize(args, log = nil)
     @args = args
+    @log = log
     @config = ApplicationConfig.new
   end
 
@@ -12,7 +13,7 @@ class Driver
   end
 
   def file_system(user)
-    Ftpd::VirtualFileSystem.new(get_outfile_name, @args.debug)
+    Ftpd::VirtualFileSystem.new(get_outfile_name, @args.debug, @log)
   end
 
   private
