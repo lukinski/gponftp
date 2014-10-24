@@ -7,8 +7,8 @@ module Ftpd
     attr_accessor :client_ip
 
     def initialize(outfile, debug_mode = false)
-      @outfile = outfile
-      @outfile_path = "/#{@outfile}"
+      @logger = Logger.new('onu_ftp_filesystem.log', 10, 1024000)
+      @outfile_path = "/#{outfile}"
       @debug_mode = debug_mode
     end
 
