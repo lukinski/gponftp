@@ -42,7 +42,7 @@ module Ftpd
       begin
         get_content(ftp_path)
       rescue => ex
-        if @log != nil
+        unless @log.nil?
           @log.warn ex.message
           @log.debug ex.backtrace
         end
