@@ -29,13 +29,13 @@ module ConfigFileBuilder
 
     def build_xml(device)
       @device = device
-      @onu_attrs = @device['onu_attributes']
+      @onu_attrs = @device[:onu_attributes]
 
       @builder = ConfigXmlBuilder::ConfigBuilder.new(@xml, @device, @config)
 
       @xml.tag! 'ONTProvision.configuration' do
         @xml.client_ip @device[:ip]
-        @xml.modified_time '2014-05-21 16:00:00'
+        @xml.modified_time @device[:modification_date]
 
         ConfigXmlBuilder.onu_attrs = @onu_attrs
         @builder.build_config_xml

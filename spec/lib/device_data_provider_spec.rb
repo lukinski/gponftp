@@ -41,6 +41,8 @@ describe DeviceDataProvider do
   end
 
   describe '#get_data_by_sn' do
+    let(:device) { provider.get_data_by_sn(serial_number) }
+
     it 'responds to get_data_by_sn method' do
       expect(provider).to respond_to(:get_data_by_sn)
     end
@@ -50,7 +52,12 @@ describe DeviceDataProvider do
     end
 
     its 'return hash contains onu_attributes key' do
-      expect(provider.get_data_by_sn(serial_number).has_key?('onu_attributes')).to be_true
+      expect(device.has_key?(:onu_attributes)).to be_true
+    end
+
+    its 'return hash contains device last modification date' do
+      expect(device.has_key?(:modification_date)).to be_true
+      device[:modification_date].should match(/\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}/)
     end
   end
 
