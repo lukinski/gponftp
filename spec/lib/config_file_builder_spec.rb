@@ -1,9 +1,12 @@
 require 'spec_helper'
 
 require_relative '../../lib/config_file_builder'
+require_relative '../../lib/application_config'
+require_relative '../../lib/builders/ssid_builder'
 
 describe ConfigFileBuilder::ConfigBuilder do
   let(:builder) { ConfigFileBuilder::ConfigBuilder.new(client_ip) }
+  let(:config) { ApplicationConfig.new }
 
   describe '#new' do
     it 'is instance of ConfigBuilder' do
@@ -18,6 +21,11 @@ describe ConfigFileBuilder::ConfigBuilder do
       should match(/xml version="1.0"/)
     end
 
+    it 'contains default config value for ENCRYPTION' do
+      encryption = ConfigXmlBuilder::SsidBuilder.enc_id(config.xml['encryption'])
+      should match(/<encryption>#{encryption}<\/encryption>/m)
+    end
+
     it 'contains ONTProvision.configuration branch' do
       should match(/<ONTProvision.configuration>.+<\/ONTProvision.configuration>/m)
     end
@@ -27,7 +35,7 @@ describe ConfigFileBuilder::ConfigBuilder do
     end
 
     it 'returns default value for empty onu_attribute' do
-      expect(builder.attr(nil, 'default')).to eq 'default'
+      expect(ConfigXmlBuilder.attr(nil, 'default')).to eq 'default'
     end
 
     it_should_behave_like('xml file', 'wan_ppp_configuration', [

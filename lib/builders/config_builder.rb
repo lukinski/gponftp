@@ -1,18 +1,14 @@
 Dir[File.dirname(__FILE__) + '/*.rb'].each {|file| require_relative file }
 
 module ConfigXmlBuilder
-  @@onu_attrs = nil
+  @onu_attrs = nil
 
-  def self.onu_attrs
-    @@onu_attrs
-  end
-
-  def self.onu_attrs=onu_attrs
-    @@onu_attrs = onu_attrs
+  class << self
+    attr_accessor :onu_attrs
   end
 
   def self.attr(key, default)
-    @@onu_attrs && @@onu_attrs.has_key?(key) ? @@onu_attrs[key] : default
+    @onu_attrs && @onu_attrs.has_key?(key) ? @onu_attrs[key] : default
   end
 
   class ConfigBuilder
