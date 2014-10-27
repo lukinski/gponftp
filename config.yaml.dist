@@ -5,6 +5,8 @@ xml:
   admin_password: adminpass
   user_password: userpass
   telnet_admin_password: telnetadminpass
+  encryption: AES+TKIP
+  authentication: WPA2-PSK
 database:
   host: localhost
   username: root
